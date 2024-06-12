@@ -73,6 +73,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                           if (userData != null) {
                             SharedPreferences prefs =
                                 await SharedPreferences.getInstance();
+                            await prefs.setString('userName', username);
                             await prefs.setString(
                                 'userData', jsonEncode(userData));
                             await prefs.setBool('hasCompletedOnboarding', true);

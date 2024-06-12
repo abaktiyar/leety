@@ -1,11 +1,23 @@
-// import cupertino widgets
-// import 'package:flutter/cupertino.dart';
 import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:leety/graphql/leety_gql_client.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class HomePage extends StatelessWidget {
-  const HomePage({super.key});
+class HomePage extends StatefulWidget {
+  const HomePage({Key? key}) : super(key: key);
+
+  @override
+  _HomePageState createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+  late Future<List<Map<String, String>>> _userDataFuture;
+
+  @override
+  void initState() {
+    super.initState();
+    _userDataFuture = _getUserData();
+  }
 
   Future<List<Map<String, String>>> _getUserData() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -15,6 +27,18 @@ class HomePage extends StatelessWidget {
       return jsonData.map((item) => Map<String, String>.from(item)).toList();
     }
     return [];
+  }
+
+  Future<void> _refreshData() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    var userName = prefs.getString("userName");
+    if (userName != null) {
+      var userData = await fetchUserData(userName, 15);
+      await prefs.setString('userData', jsonEncode(userData));
+      setState(() {
+        _userDataFuture = _getUserData();
+      });
+    }
   }
 
   @override
@@ -31,9 +55,15 @@ class HomePage extends StatelessWidget {
         ),
         centerTitle: true,
         backgroundColor: Colors.black26,
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.refresh),
+            onPressed: _refreshData,
+          ),
+        ],
       ),
       body: FutureBuilder<List<Map<String, String>>>(
-        future: _getUserData(),
+        future: _userDataFuture,
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return Center(child: CircularProgressIndicator());

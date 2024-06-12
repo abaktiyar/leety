@@ -22,7 +22,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-        home: hasCompletedOnboarding ? HomePage() : OnboardingScreen());
-    // home: OnboardingScreen());
+        // home: hasCompletedOnboarding ? HomePage() : OnboardingScreen());
+        home: OnboardingScreen());
   }
 }

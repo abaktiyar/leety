@@ -41,7 +41,7 @@ Future<List<Map<String, String>>?> fetchUserData(
         final String timestampValue = submission['timestamp'];
         DateTime dateTime = DateTime.fromMillisecondsSinceEpoch(
             int.parse(timestampValue) * 1000,
-            isUtc: true);
+            isUtc: false);
         final String formattedDateTime = dateTime.toString();
         final String title = submission['title'];
         final String titleSlug = submission['titleSlug'];
