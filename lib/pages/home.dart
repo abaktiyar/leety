@@ -1,10 +1,11 @@
 import 'dart:convert';
+import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:flutter/material.dart';
 import 'package:leety/graphql/leety_gql_client.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class HomePage extends StatefulWidget {
-  const HomePage({Key? key}) : super(key: key);
+  const HomePage({super.key});
 
   @override
   _HomePageState createState() => _HomePageState();
@@ -30,6 +31,12 @@ class _HomePageState extends State<HomePage> {
   }
 
   Future<void> _refreshData() async {
+    AwesomeNotifications().createNotification(
+        content: NotificationContent(
+            id: 1,
+            channelKey: "leety_channel",
+            title: "Leety",
+            body: "Refreshing data..."));
     SharedPreferences prefs = await SharedPreferences.getInstance();
     var userName = prefs.getString("userName");
     if (userName != null) {
@@ -68,7 +75,7 @@ class _HomePageState extends State<HomePage> {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return Center(child: CircularProgressIndicator());
           } else if (snapshot.hasError) {
-            print("Error: ${snapshot.error}"); // Debugging statement
+            print("Error: ${snapshot.error}");
             return Center(child: Text('Error: ${snapshot.error}'));
           } else {
             var userData = snapshot.data ?? [];

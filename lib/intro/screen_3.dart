@@ -29,7 +29,6 @@ class Screen3 extends StatelessWidget {
         child: TextField(
           onChanged: (value) {
             // Update the userName variable
-            print(userName);
             userName = value;
           },
           decoration: InputDecoration(

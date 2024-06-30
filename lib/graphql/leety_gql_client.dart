@@ -63,6 +63,7 @@ Future<List<Map<String, String>>?> fetchUserData(
   }
 }
 
+// Made just for testing
 void main() async {
   const String username = 'trenytiy';
   const int limit = 15;
