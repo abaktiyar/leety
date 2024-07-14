@@ -4,8 +4,16 @@ import 'package:leety/notification_controller.dart';
 import 'package:leety/pages/home.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import 'package:leety/graphql/leety_gql_client.dart';
+import 'package:workmanager/workmanager.dart';
 import 'package:leety/intro/onboarding_screen.dart';
+
+void callbackDispatcher() {
+  // print("callbackDispatcher");
+  Workmanager().executeTask((task, inputData) async {
+    await NotificationController.checkAndSendNotification();
+    return Future.value(true);
+  });
+}
 
 void main() async {
   await AwesomeNotifications().initialize(null, [
@@ -25,13 +33,17 @@ void main() async {
   if (!isAllowedToSendNotifications) {
     AwesomeNotifications().requestPermissionToSendNotifications();
   }
+
+  Workmanager().initialize(callbackDispatcher);
+
   WidgetsFlutterBinding.ensureInitialized();
 
   SharedPreferences prefs = await SharedPreferences.getInstance();
   bool hasCompletedOnboarding =
       prefs.getBool('hasCompletedOnboarding') ?? false;
-
   runApp(MyApp(hasCompletedOnboarding: hasCompletedOnboarding));
+
+  NotificationController.scheduleNotificationChecks();
 }
 
 class MyApp extends StatefulWidget {

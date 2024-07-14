@@ -30,8 +30,6 @@ Future<List<Map<String, String>>?> fetchUserData(
       'variables': variables,
     }),
   );
-  print("userName $username limit $limit");
-  print("Response: ${response.body}");
   if (response.statusCode == 200) {
     final Map<String, dynamic> data = jsonDecode(response.body);
     if (data.containsKey('data') &&
@@ -45,7 +43,6 @@ Future<List<Map<String, String>>?> fetchUserData(
         final String formattedDateTime = dateTime.toString();
         final String title = submission['title'];
         final String titleSlug = submission['titleSlug'];
-        print("title $title titleSlug $titleSlug");
         return {
           'dateTime': formattedDateTime,
           'title': title,
@@ -65,7 +62,7 @@ Future<List<Map<String, String>>?> fetchUserData(
 
 // Made just for testing
 void main() async {
-  const String username = 'trenytiy';
+  const String username = "sauravkumar";
   const int limit = 15;
 
   final response = await fetchRecentAcSubmissions(username, limit);

@@ -31,12 +31,6 @@ class _HomePageState extends State<HomePage> {
   }
 
   Future<void> _refreshData() async {
-    AwesomeNotifications().createNotification(
-        content: NotificationContent(
-            id: 1,
-            channelKey: "leety_channel",
-            title: "Leety",
-            body: "Refreshing data..."));
     SharedPreferences prefs = await SharedPreferences.getInstance();
     var userName = prefs.getString("userName");
     if (userName != null) {
@@ -46,6 +40,12 @@ class _HomePageState extends State<HomePage> {
         _userDataFuture = _getUserData();
       });
     }
+    // AwesomeNotifications().createNotification(
+    //     content: NotificationContent(
+    //         id: 1,
+    //         channelKey: "leety_channel",
+    //         title: "Leety",
+    //         body: "Checking notifications..."));
   }
 
   @override

@@ -68,7 +68,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                         onTap: () async {
                           // get userName from screen 3
                           String username = Screen3.userName;
-                          print(username);
+                          // print(username);
                           var userData = await fetchUserData(username, 15);
                           if (userData != null) {
                             SharedPreferences prefs =
